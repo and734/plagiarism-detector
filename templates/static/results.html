@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plagiarism Check Results</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .match-phrase { font-style: italic; color: #6c757d; margin-left: 20px; }
+    .similarity-high { color: red; font-weight: bold; }
+    .similarity-medium { color: orange; }
+    .similarity-low { color: green; }
+    .result-card { margin-bottom: 1.5rem; }
+    .preview-text { font-size: 0.9em; color: #555; max-height: 100px; overflow-y: auto; background-color: #f8f9fa; padding: 5px; border-radius: 4px;}
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Plagiarism Check Results</h2>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Check Another File</a>
+  </div>
+
+  {% if error %}
+  <div class="alert alert-danger" role="alert">
+    <strong>Error during processing:</strong> {{ error }}
+  </div>
+  {% else %}
+  <div class="alert alert-info">
+    Checked file: <strong>{{ original_filename }}</strong> <br>
+    Highest detected similarity: <strong>{{ "%.2f"|format(max_similarity * 100) }}%</strong>
+    {% if results %}
+    <a href="{{ url_for('download_report') }}" class="btn btn-success btn-sm float-end">Download PDF Report</a>
+    {% endif %}
+  </div>
+
+
+  {% if results %}
+  <p>Found {{ results|length }} potential source(s) with similarity above threshold or matching phrases:</p>
+  {% for result in results %}
+  <div class="card result-card">
+    <div class="card-header">
+      <strong >
+        Similarity:
+        {% set perc = result.similarity * 100 %}
+        <span class="
+                                    {% if perc > 70 %}similarity-high
+                                    {% elif perc > 30 %}similarity-medium
+                                    {% else %}similarity-low
+                                    {% endif %}">
+                                    {{ "%.2f"|format(perc) }}%
+                                </span>
+      </strong>
+      <br>
+      <a href="{{ result.url }}" target="_blank" rel="noopener noreferrer">{{ result.url }}</a>
+    </div>
+    <div class="card-body">
+      {% if result.matching_phrases %}
+      <h6 class="card-subtitle mb-2 text-muted">Matching Phrases/Sections Found:</h6>
+      <ul>
+        {% for phrase in result.matching_phrases[:10] %} {# Limit display in HTML #}
+        <li class="match-phrase">"{{ phrase }}"</li>
+        {% endfor %}
+        {% if result.matching_phrases|length > 10 %}
+        <li class="match-phrase">... and {{ result.matching_phrases|length - 10 }} more.</li>
+        {% endif %}
+      </ul>
+      {% else %}
+      <p class="text-muted small">No specific long matching phrases found, but overall similarity detected.</p>
+      {% endif %}
+      <h6 class="card-subtitle mt-3 mb-2 text-muted">Scraped Content Preview:</h6>
+      <div class="preview-text">
+        {{ result.scraped_preview }}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% else %}
+  <div class="alert alert-success" role="alert">
+    No significant matching content found from the searched web pages.
+  </div>
+  {% endif %}
+  {% endif %} {# end if not error #}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
