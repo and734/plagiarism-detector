@@ -1,0 +1,13 @@
+Flask>=2.0
+python-docx>=0.8 # For reading .docx files
+requests>=2.25
+beautifulsoup4>=4.9
+lxml>=4.6 # Often faster parser for BeautifulSoup
+# For scraping Google (replace with your preferred library if not using ScrapingBee concept)
+# scrapingbee>=1.0 # Or the specific client library if available
+# For text similarity
+scikit-learn>=1.0 # For TF-IDF / Cosine Similarity
+# Optional: For finding specific phrase matches
+# thefuzz>=0.19 # or fuzzywuzzy
+# Optional: PDF Generation
+fpdf2>=2.5
