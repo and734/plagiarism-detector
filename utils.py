@@ -13,7 +13,7 @@ from fpdf import FPDF # For PDF generation
 # --- Configuration ---
 # !! IMPORTANT: Replace with your actual ScrapingBee API Key !!
 # If you don't have one, the google_search function will use placeholders.
-SCRAPINGBEE_API_KEY = os.environ.get("SCRAPINGBEE_API_KEY", "42DKOJ2K4OBVKILTVBCZ32ETDJFDAM0OM4QTWQSH2F50E1IG1FFYWD5JZQS4038W1PBF3EO6P89XPSJI")
+SCRAPINGBEE_API_KEY = os.environ.get("SCRAPINGBEE_API_KEY", "42DKOJ2K4OBVKILTVBCZ32ETDJFDAM0OM4QTWQSH2F50E1IG1FFYWD5JZQS4038W1PBF3EP89XPSJI")
 # Make sure SCRAPINGBEE_API_KEY is set as an environment variable or replace the placeholder
 # Example: export SCRAPINGBEE_API_KEY='your_real_key' (in Linux/macOS)
 # Example: set SCRAPINGBEE_API_KEY=your_real_key (in Windows cmd)
